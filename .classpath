@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/jfree/jcommon/1.0.21/jcommon-1.0.21.jar"/>
+	<classpathentry kind="lib" path="lib/jfree/jfreechart/1.0.17/lib/jfreechart-1.0.17.jar" sourcepath="lib/jfree/jfreechart/1.0.17/source"/>
+	<classpathentry kind="lib" path="lib/org/apache/commons/commons-math3/3.3/commons-math3-3.3.jar" sourcepath="lib/org/apache/commons/commons-math3/3.3/commons-math3-3.3-src.zip">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/ursus-swarm/lib/org/apache/commons/commons-math3/3.3/commons-math3-3.3-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="lib/org/apache/commons/commons-compress/1.9/commons-compress-1.9.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/ursus-swarm/lib/org/apache/commons/commons-compress/1.9/commons-compress-1.9-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="resources"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
