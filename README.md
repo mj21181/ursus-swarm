@@ -39,3 +39,40 @@ The type of object returned by the plan method depends on which search type was 
 
 **A* Example**
 
+	// Create a 5x5 cartesian grid, indexed from 0
+	ObstacleMap map = new ObstacleMap(5, 5);
+	
+	/* Create our EngineConfig object
+	 * A* is a single agent search, so we make a SingleAgentConfig
+	 * The parameters are as follows:
+	 * id number - 0
+	 * start x position     - 2
+	 * start y position     - 1
+	 * start time index     - 0
+	 * target x position    - 4
+	 * target y position    - 4
+	 * target time          - -1 (we don't care when the search ends)
+	 * is Jump Point Search - false (using A*)
+	 * obstacle map         - map
+	 * constraints          - empty list, no constraints imposed by other robots (only 1)
+	 */
+	SingleAgentConfig cfg = new SingleAgentConfig(0, 2, 1, 0, 4, 4,
+					-1, false, map, new LinkedList<Constraint>());
+	
+	// construct our search engine				
+	GraphSearchEngine eng = new GraphSearchEngine(cfg);
+	
+	// plan our path
+	AgentPath p = (AgentPath) eng.plan();
+			
+	System.out.println("Path: " + p.toString());
+			
+	SearchPerformance stats = eng.getPerformanceStats();
+	
+	System.out.println("Run Time (ms): " + stats.getTimeToRunInMilliseconds());
+	System.out.println("Number of Nodes in Grid expanded: " + stats.getNumberOfNodesExpanded());
+	System.out.println("Path Length: " + stats.getSolutionLength());
+	
+**Jump Point Search Example**
+
+This example is identical to the A* example except the parameter "is Jump Point Search" should be set to true. Jump Point Search is a much faster path planning algorithm than A* on uniform cost grids, which is the type of graph being searched here.  There is also much less memory overhead. In addition, the paths produced are straighter.
