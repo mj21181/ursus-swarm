@@ -24,7 +24,7 @@ src/main/java:
 **log/** - Source files related to the library's logging mechanism. Interface exists for attaching log messages to an application using this library <br>
 **path/** - Source files related to robot path planning for single or multiple robots <br>
 **pso/** - Source files related to particle swarm optimization robots can use to search for some goal <br>
-**render/** - Source files associated with a renderer used to render simulations or logs <br>
+**render/** - Source files associated with a renderer used to render simulations <br>
 **task/** - Source files associated with multitasking and Thread synchronization between robots <br>
 
 Examples
@@ -39,8 +39,14 @@ The type of object returned by the plan method depends on which search type was 
 
 **A* Example**
 
+A* is a path planning algorithm which will bring a single robot (or agent, like a character in a video game) from one location in a graph or map to another. To create this path we need to create the map being explored and specify the locations of any stationary obstacles. We also need to create a SingleAgentConfig object to configure the GraphSearchEngine.
+
 	// Create a 5x5 cartesian grid, indexed from 0
 	ObstacleMap map = new ObstacleMap(5, 5);
+	
+	// here is where we could specify any obstacles with a method call
+	// or load the information from a file
+	// using map.blockXY(int x, int y)
 	
 	/* Create our EngineConfig object
 	 * A* is a single agent search, so we make a SingleAgentConfig
@@ -64,6 +70,9 @@ The type of object returned by the plan method depends on which search type was 
 	
 	// plan our path
 	AgentPath p = (AgentPath) eng.plan();
+	
+	// this object is a List of LocationVertex objects which
+	// are the x,y,t elements of the path the agent should follow
 			
 	System.out.println("Path: " + p.toString());
 			
@@ -75,4 +84,58 @@ The type of object returned by the plan method depends on which search type was 
 	
 **Jump Point Search Example**
 
-This example is identical to the A* example except the parameter "is Jump Point Search" should be set to true. Jump Point Search is a much faster path planning algorithm than A* on uniform cost grids, which is the type of graph being searched here.  There is also much less memory overhead. In addition, the paths produced are straighter.
+This example is identical to the A* example except the parameter "is Jump Point Search" should be set to true. Jump Point Search is a much faster path planning algorithm than A* on uniform cost grids, which is the type of graph being searched here.  There is also much less memory overhead. In addition, the paths produced tend to be straighter across open spaces.
+
+**Conflict Based Search Example**
+
+Unlike A* or Jump Point Search, Conflict Based Search is a path planning algorithm for multiple robots or agents. Its goal is to plan a path from point A to B for every agent so that they are both free of conflicts and collisions. No conflicts exist between the agents and obstacles or agents and other agents. These paths are also optimal, so the sum of all path lengths is guaranteed to be the shortest possible.
+
+	ObstacleMap map = new ObstacleMap(5, 5);
+	
+	// create the start and target locations for each agent in x, y, t
+	// -1 for the target time t means we don't care when it finds
+	// the target location
+	LocationVertex start0 = new LocationVertex(2, 0, 0);
+	LocationVertex target0 = new LocationVertex(2, 4, -1);
+	LocationVertex start1 = new LocationVertex(2, 4, 0);
+	LocationVertex target1 = new LocationVertex(2, 0, -1);
+	
+	Agent a0 = new Agent(0, start0, target0);
+	Agent a1 = new Agent(1, start1, target1);
+	
+	// add the Agents to the list
+	ArrayList<Agent> agents = new ArrayList<Agent>();
+	
+	agents.add(a0);
+	agents.add(a1);
+	
+	// create our EngineConfig object
+	CBSConfig conf = new CBSConfig(agents, map);
+	
+	System.out.println("Config: " + conf.toString());
+	
+	GraphSearchEngine eng = new GraphSearchEngine(conf);
+	
+	// searches the constraint tree for the solution
+	ConstraintTreeNode goal = (ConstraintTreeNode) eng.plan();
+	
+	if (goal == null)
+	{
+		System.err.println("Error: Solution is null. This means the " +
+		"algorithm could find no valid solution. For example, this " +
+		"happens when a target location is completely blocked " +
+		"by obstacles.");
+	}
+	
+	// print our solution
+	for (Agent a : goal.getSolution().keySet())
+	{
+		AgentPath p = goal.getSolution().get(a);
+		
+		System.out.println("For Agent " + a.getId() + " path is: ");
+		System.out.println(p.toString());
+	}
+	
+**Rendering Paths**
+
+The render package is used to render simulations in a window using the graphics card. This package could use some work, and would ideally read from a log file. Its cool to use it to visualize the path planning results. 
