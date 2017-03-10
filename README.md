@@ -10,22 +10,22 @@ Why name the library ursus-swarm? I could have named it JSwarm, Java Swarm, or s
 Project Structure
 ------------------
 
-*lib/* - Folder containing dependent libraries and jars. In the future, this will hopefully be replaced by Maven <br>
-*resources/* - Folder containing project resources like images <br>
-*src/* - Folder containing source files <br>
+**lib/** - Folder containing dependent libraries and jars. In the future, this will hopefully be replaced by Maven <br>
+**resources/** - Folder containing project resources like images <br>
+**src/** - Folder containing source files <br>
 <br>
-*src/main/java/* - Main source files <br>
-*src/test/java/* - Unit Tests <br>
+**src/main/java/** - Main source files <br>
+**src/test/java/** - Unit Tests <br>
 
 src/main/java:
 
-*event/* - Source files associated with transmission, reception, and processing of events and messages passed between robots <br>
-*gui/* - Source files associated with various GUI components like the display of plots <br>
-*log/* - Source files related to the library's logging mechanism. Interface exists for attaching log messages to an application using this library <br>
-*path/* - Source files related to robot path planning for single or multiple robots <br>
-*pso/* - Source files related to particle swarm optimization robots can use to search for some goal <br>
-*render/* - Source files associated with a renderer used to render simulations or logs <br>
-*task/* - Source files associated with multitasking and Thread synchronization between robots <br>
+**event/** - Source files associated with transmission, reception, and processing of events and messages passed between robots <br>
+**gui/** - Source files associated with various GUI components like the display of plots <br>
+**log/** - Source files related to the library's logging mechanism. Interface exists for attaching log messages to an application using this library <br>
+**path/** - Source files related to robot path planning for single or multiple robots <br>
+**pso/** - Source files related to particle swarm optimization robots can use to search for some goal <br>
+**render/** - Source files associated with a renderer used to render simulations or logs <br>
+**task/** - Source files associated with multitasking and Thread synchronization between robots <br>
 
 Examples
 ===================
@@ -33,4 +33,9 @@ Examples
 Path Planning
 ---------------
 
-TODO
+The main class of the Path Planning library is called GraphSearchEngine. This object is responsible for determining which search needs to be performed based on the EngineConfig object that is passed to it. This could be a single agent path like A* or Jump Point Search, or it could be a multiple agent search like Conflict Based Search. The search being performed depends on the parameters of EngineConfig object passed to it. After being configured the search can be performed using the plan() method. <br>
+<br>
+The type of object returned by the plan method depends on which search type was configured. The performance of the search is stored in a SearchPerformance object and can be queried after the search by calling getPerformanceStats() on the GraphSearchEngine. <br>
+
+**A* Example**
+
